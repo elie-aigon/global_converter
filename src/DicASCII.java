@@ -21,4 +21,5 @@ public class DicASCII {
     public static Map<Character, String[]> getDic() {
         return dic;
     }
+
 }
