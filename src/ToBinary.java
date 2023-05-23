@@ -2,7 +2,7 @@ public class ToBinary {
     public static String StringToBinary(String input) {
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
-            output.append(CharToBinary((int) input.charAt(i)));
+            output.append(CharToBinary((int) input.charAt(i)) + " ");
         }
         return output.toString();
     }

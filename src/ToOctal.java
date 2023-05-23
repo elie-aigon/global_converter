@@ -2,7 +2,7 @@ public class ToOctal {
     public static String StringToOctal(String input) {
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
-            output.append(CharToOctal((int) input.charAt(i)));
+            output.append(CharToOctal((int) input.charAt(i)) + " ");
         }
         return output.toString();
     }
