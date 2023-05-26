@@ -1,99 +1,77 @@
-import java.util.HashMap;
-import java.util.Map;
 
 public class GlobalConverter {
-    private static Map<Character, String> DicFirstStep = new HashMap<>();
-    private static Map<Character, String> DicFinalStep = new HashMap<>();
-
     public static void main(String[] args) {
-        String input = CheckInput(args[0]);
+        long start = System.nanoTime();
+        XToString XToStr = new XToString();
+        StringToX StrToX = new StringToX();
         String output1;
         String output2;
-        output1 = ConvertFirstStep(input, args[1]);
-        output2 = ConvertFinalStep(output1, args[2]);
-        System.out.println("Output : " + output2);
-    }
-    public static String CheckInput(String input) {
-        return input.replaceAll("[^a-zA-Z0-9 ]","");
-    }
-    public static String ConvertFirstStep(String input, String args1) {
-        StringBuilder output = new StringBuilder();
-        switch(args1) {
+//        First Step
+        switch(args[0]) {
             case "-h":
             case "hexadecimal":
-                DicFirstStep = Dic.GetDicHexa();
-                for (String x : input.split(" ")) {
-                    for (Map.Entry<Character, String> entry : DicFirstStep.entrySet()) {
-                        if (entry.getValue().equals(x)) {
-                            output.append(entry.getKey());
-                        }
-                    }
-                }return output.toString();
+                output1 = XToStr.HexaToString(args[0].replace(" ",""));
+                break;
             case "-o":
             case "octal":
-                DicFirstStep = Dic.GetDicOctal();
-                for (String x : input.split(" ")) {
-                    for (Map.Entry<Character, String> entry : DicFirstStep.entrySet()) {
-                        if (entry.getValue().equals(x)) {
-                            output.append(entry.getKey());
-                        }
-                    }
-                }return output.toString();
+                output1 = XToStr.OctalToString(args[0].split(" "));
+                break;
             case "-b":
             case "binary":
-                DicFirstStep = Dic.GetDicBinary();
-                for (String x : input.split(" ")) {
-                    for (Map.Entry<Character, String> entry : DicFirstStep.entrySet()) {
-                        if (entry.getValue().equals(x)) {
-                            output.append(entry.getKey());
-                        }
-                    }
-                }return output.toString();
+                output1 = XToStr.BinaryToString(args[0].split(" "));
+                break;
             case "-d":
             case "decimal":
-                DicFirstStep = Dic.GetDicDecimal();
-                for (String x : input.split(" ")) {
-                    for (Map.Entry<Character, String> entry : DicFirstStep.entrySet()) {
-                        if (entry.getValue().equals(x)) {
-                            output.append(entry.getKey());
-                        }
-                    }
-                }return output.toString();
+                output1 = XToStr.DecimalToString(args[0].split(" "));
+                break;
             default:
-                return input;
+                output1 = args[0];
+                break;
         }
-    }
-    public static String ConvertFinalStep(String input, String args2) {
-        StringBuilder output = new StringBuilder();
-        switch(args2) {
+        switch(args[2]) {
             case "-h":
             case "hexadecimal":
-                DicFinalStep = Dic.GetDicHexa();
-                for (int i = 0; i< input.length(); i++) {
-                    output.append(DicFinalStep.get(input.charAt(i)) + " ");
-                }return output.toString();
+                output2 = StrToX.StringToHexa(output1);
+                break;
             case "-o":
             case "octal":
-                DicFinalStep = Dic.GetDicOctal();
-                for (int i = 0; i< input.length(); i++) {
-                    output.append(DicFinalStep.get(input.charAt(i)) + " ");
-                }return output.toString();
+                output2 = StrToX.StringToOctal(output1);
+                break;
             case "-b":
             case "binary":
-                DicFinalStep = Dic.GetDicBinary();
-                for (int i = 0; i< input.length(); i++) {
-                    output.append(DicFinalStep.get(input.charAt(i)) + " ");
-                }return output.toString();
+                output2 = StrToX.StringToBinary(output1);
+                break;
             case "-d":
             case "decimal":
-                DicFinalStep = Dic.GetDicDecimal();
-                for (int i = 0; i< input.length(); i++) {
-                    output.append(DicFinalStep.get(input.charAt(i)) + " ");
-                }return output.toString();
+                output2 = StrToX.StringToDecimal(output1);
+                break;
             default:
-                output.append(input);
-                return output.toString();
+                output2 = output1;
+                break;
+        }
+        float delta = System.nanoTime() - start;
+        System.out.println("Output : " + output2);
+        System.out.println("Time : " + delta/1000000 + " ms");
+    }
+    public static String GetTypeInput(String input) {
+        if (input.matches("^([0-1]{8}\s)*$")) {
+            System.out.println("1a");
+            return "-b";
+        } else if (input.matches("^([0][0-7]{3}\s)*$")) {
+            System.out.println("2a");
+            return "-o";
+        } else if (input.matches("^([0-9]+\s)*$")) {
+            System.out.println("3a");
+            return "-d";            
+        } else if (input.matches("^([0-9|A-F]{2}\s)*$")) {
+            System.out.println("4a");
+            return "-h";
+        } else if (input.matches("[0-9a-zA-Z ]")) {
+            System.out.println("5a");
+            return "-t";
+        } else {
+            System.out.println("a");
+            return "";
         }
     }
 }
-
