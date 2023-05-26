@@ -6,8 +6,9 @@ public class GlobalConverter {
         StringToX StrToX = new StringToX();
         String output1;
         String output2;
+        args[0] = args[0].replaceAll("[^a-zA-Z0-9 ]", "");
 //        First Step
-        switch(args[0]) {
+        switch(args[1]) {
             case "-h":
             case "hexadecimal":
                 output1 = XToStr.HexaToString(args[0].replace(" ",""));
@@ -52,26 +53,5 @@ public class GlobalConverter {
         float delta = System.nanoTime() - start;
         System.out.println("Output : " + output2);
         System.out.println("Time : " + delta/1000000 + " ms");
-    }
-    public static String GetTypeInput(String input) {
-        if (input.matches("^([0-1]{8}\s)*$")) {
-            System.out.println("1a");
-            return "-b";
-        } else if (input.matches("^([0][0-7]{3}\s)*$")) {
-            System.out.println("2a");
-            return "-o";
-        } else if (input.matches("^([0-9]+\s)*$")) {
-            System.out.println("3a");
-            return "-d";            
-        } else if (input.matches("^([0-9|A-F]{2}\s)*$")) {
-            System.out.println("4a");
-            return "-h";
-        } else if (input.matches("[0-9a-zA-Z ]")) {
-            System.out.println("5a");
-            return "-t";
-        } else {
-            System.out.println("a");
-            return "";
-        }
     }
 }
